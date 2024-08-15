@@ -9,8 +9,8 @@ export const JournalLayout = ({ children }) => {
 
     const [mobileOpen, setMobileOpen] = useState(false);
     const handleDrawerToggle = () => {
-            setMobileOpen(!mobileOpen);
-        }
+        setMobileOpen(!mobileOpen);
+    }
 
     return (
         <Box sx={{ display: 'flex' }} className="animate__animated animate__fadeIn animate__faster" >

@@ -1,34 +1,45 @@
 import { useMemo } from "react"
 import { useDispatch } from "react-redux"
-import { ListItem, ListItemButton, ListItemIcon, Grid, ListItemText } from "@mui/material"
-import { TurnedInNot } from "@mui/icons-material"
-import { setActiveNote } from "../../store/journal/journalSlice"
+import { ListItem, ListItemButton, ListItemIcon, Grid, ListItemText, IconButton } from "@mui/material"
+import { TurnedInNot, TurnedIn } from "@mui/icons-material"
+import { setActiveNote, togglePinNote } from "../../store/journal/journalSlice"
+import { togglePinNoteFirebase } from "../../store/journal/thunks"
 
-
-export const SideBarItem = ({ title, body, id, date, imageUrls = [] }) => {
+export const SideBarItem = ({ title, body, id, date, imageUrls = [], isPinned }) => {
 
     const dispatch = useDispatch()
-    
+
     const activeNote = () => {
-        return dispatch( setActiveNote( { title, body, id, date, imageUrls } ) )
+        dispatch(setActiveNote({ title, body, id, date, imageUrls }))
     }
 
-    const newTitle = useMemo( () => {
+    const handleTogglePin = () => {
+        dispatch(togglePinNoteFirebase(id, isPinned));
+    };
+
+    const newTitle = useMemo(() => {
         return title?.length > 17
             ? title.substring(0, 17) + '...'
             : title
     }, [title])
 
+    const newBody = useMemo(() => {
+        return body?.length > 17
+            ? body.substring(0, 17) + '...'
+            : body
+    }, [body])
 
     return (
-        <ListItem disablePadding  >
-            <ListItemButton onClick={ activeNote }>
+        <ListItem disablePadding>
+            <ListItemButton onClick={activeNote}>
                 <ListItemIcon>
-                    <TurnedInNot />
+                    <IconButton onClick={handleTogglePin}>
+                        {isPinned ? <TurnedIn style={{ color: 'gold' }} /> : <TurnedInNot />}
+                    </IconButton>
                 </ListItemIcon>
-                <Grid container >
-                    <ListItemText primary={ newTitle } />
-                    <ListItemText secondary={ body } />
+                <Grid container>
+                    <ListItemText primary={newTitle} />
+                    <ListItemText secondary={newBody} />
                 </Grid>
             </ListItemButton>
         </ListItem>
