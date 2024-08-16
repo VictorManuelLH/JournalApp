@@ -130,7 +130,7 @@ export const NoteView = () => {
                 anchor="right"
                 open={isDrawerOpen}
                 onClose={onCloseDrawer}
-                sx={{ width: { xs: '100%', sm: '500px' } }} // Ajustar ancho
+                sx={{ width: { xs: '100%', sm: '500px' } }}
             >
                 <Grid container direction="column" sx={{ width: { xs: '100%', sm: '500px' }, p: 2 }}>
                     <Typography variant="h6" sx={{ mb: 2 }}>
