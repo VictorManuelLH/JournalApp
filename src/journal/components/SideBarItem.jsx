@@ -5,12 +5,12 @@ import { TurnedInNot, TurnedIn } from "@mui/icons-material"
 import { setActiveNote, togglePinNote } from "../../store/journal/journalSlice"
 import { togglePinNoteFirebase } from "../../store/journal/thunks"
 
-export const SideBarItem = ({ title, body, id, date, imageUrls = [], isPinned }) => {
+export const SideBarItem = ({ title, body, id, date, imageUrls = [], isPinned, conversation = [] }) => {
 
     const dispatch = useDispatch()
 
     const activeNote = () => {
-        dispatch(setActiveNote({ title, body, id, date, imageUrls }))
+        dispatch(setActiveNote({ title, body, id, date, imageUrls, conversation, isPinned }))
     }
 
     const handleTogglePin = () => {

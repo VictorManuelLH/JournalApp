@@ -4,7 +4,8 @@ const initialState = {
     isSaving: false,
     messageSaved: '',
     notes: JSON.parse(localStorage.getItem('notes')) || [],
-    active: null
+    active: null,
+    symbols: ['√','π']
 };
 
 export const journalSlice = createSlice({
@@ -14,6 +15,13 @@ export const journalSlice = createSlice({
         startSaving: (state) => {
             state.isSaving = true;
         },
+        addSymbol: (state, action) => {
+            state.symbols.push(action.payload);
+        },
+        setOpenAIResponse(state, action) {
+            state.isSaving = false;
+            state.openAIResponse = action.payload;
+          },
         addNewEmptyNote: (state, action) => {
             state.notes.push(action.payload);
             state.isSaving = false;
@@ -22,18 +30,23 @@ export const journalSlice = createSlice({
         setActiveNote: (state, action) => {
             state.active = action.payload;
             state.messageSaved = '';
-        },
+       
+            if (!state.active.conversation) {
+                state.active.conversation = [];
+            }
+       
+            const noteIndex = state.notes.findIndex(note => note.id === state.active.id);
+            if (noteIndex !== -1) {
+                state.notes[noteIndex] = state.active;
+            }
+       
+            localStorage.setItem('notes', JSON.stringify(state.notes));
+        },               
+            
         setNotes: (state, action) => {
             state.notes = action.payload;
             localStorage.setItem('notes', JSON.stringify(state.notes));
         },
-        togglePinNote: (state, action) => {
-            const noteIndex = state.notes.findIndex(note => note.id === action.payload);
-            if (noteIndex !== -1) {
-                state.notes[noteIndex].isPinned = !state.notes[noteIndex].isPinned;
-                localStorage.setItem('notes', JSON.stringify(state.notes));
-            }
-        },        
         updateNote: (state, action) => {
             state.isSaving = false;
             state.notes = state.notes.map(note => {
@@ -45,6 +58,13 @@ export const journalSlice = createSlice({
             localStorage.setItem('notes', JSON.stringify(state.notes));
             state.messageSaved = `${action.payload.title}, actualizada correctamente`;
         },
+        togglePinNote: (state, action) => {
+            const noteIndex = state.notes.findIndex(note => note.id === action.payload);
+            if (noteIndex !== -1) {
+                state.notes[noteIndex].isPinned = !state.notes[noteIndex].isPinned;
+                localStorage.setItem('notes', JSON.stringify(state.notes));
+            }
+        },        
         setPhotosToActiveNote: (state, action) => {
             state.isSaving = false;
             if (state.active) {
@@ -71,9 +91,11 @@ export const {
     setActiveNote,
     setNotes,
     startSaving,
+    setOpenAIResponse,
     updateNote,
     setPhotosToActiveNote,
     clearNotesLogout,
     deleteNoteById,
-    togglePinNote
+    togglePinNote,
+    addSymbol
 } = journalSlice.actions;
