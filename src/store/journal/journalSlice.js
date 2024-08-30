@@ -82,6 +82,12 @@ export const journalSlice = createSlice({
             state.active = null;
             state.notes = state.notes.filter(note => note.id !== action.payload);
             localStorage.setItem('notes', JSON.stringify(state.notes));
+        },
+        clearConversation: (state) => {
+            state.isSaving = false;
+            if (state.active) {
+                state.active.conversation = [];
+            }
         }
     }
 });
@@ -97,5 +103,6 @@ export const {
     clearNotesLogout,
     deleteNoteById,
     togglePinNote,
-    addSymbol
+    addSymbol,
+    clearConversation
 } = journalSlice.actions;

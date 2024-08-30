@@ -8,6 +8,7 @@ import { getEnviroments } from "../helper/getEnviroments";
 
 const {
     VITE_APIKEY,
+    VITE_APIKEYOPENIA,
     VITE_AUTHDOMAIN,
     VITE_PROJECTID,
     VITE_STORAGEBUCKET,
