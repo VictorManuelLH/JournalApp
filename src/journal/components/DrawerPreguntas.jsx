@@ -27,10 +27,12 @@ export const DrawerPreguntas = ({ isDrawerOpen, onCloseDrawer, questionText, set
                 '& .MuiDrawer-paper': {
                     width: { xs: '100%', sm: '75%', md: '50%', lg: '400px' },
                     overflowY: 'hidden',
+                    display: 'flex',
+                    flexDirection: 'column',
                 },
             }}
         >
-            <Grid container direction="column" sx={{ width: '100%', height: '100%', p: 2 }}>
+            <Grid container direction="column" sx={{ flexGrow: 1, p: 2 }}>
                 <Grid container justifyContent="space-between" alignItems="center">
                     <Typography variant="h6">Pregunta Aquí</Typography>
                     <IconButton onClick={onCloseDrawer}><Close /></IconButton>
@@ -51,7 +53,7 @@ export const DrawerPreguntas = ({ isDrawerOpen, onCloseDrawer, questionText, set
                 </Grid>
                 
                 {/* Contenedor con scroll para la conversación */}
-                <Box sx={{ flexGrow: 1, overflowY: 'auto', maxHeight: { xs: 'calc(100vh - 150px)', md: 'calc(100vh - 200px)' } }}>
+                <Box sx={{ flexGrow: 1, overflowY: 'auto', maxHeight: { xs: 'calc(100vh - 200px)', md: 'calc(100vh - 200px)' } }}>
                     {conversation.map((msg, index) => (
                         <Box key={index} sx={{ mb: 2 }}>
                             <Typography variant="body2" color="textSecondary">
@@ -70,7 +72,7 @@ export const DrawerPreguntas = ({ isDrawerOpen, onCloseDrawer, questionText, set
                     variant="contained"
                     color="secondary"
                     onClick={onClearConversation}
-                    sx={{ mt: 2 }}
+                    sx={{ mt: 'auto', mb: 2 }} // Margin top auto pushes the button to the bottom
                 >
                     Limpiar Conversación
                 </Button>
