@@ -22,10 +22,10 @@ export const DrawerPreguntas = ({ isDrawerOpen, onCloseDrawer, questionText, set
             open={isDrawerOpen}
             onClose={onCloseDrawer}
             sx={{ 
-                width: '400px',
+                width: { xs: '100%', sm: '75%', md: '50%', lg: '400px' },
                 flexShrink: 0,
                 '& .MuiDrawer-paper': {
-                    width: '400px',
+                    width: { xs: '100%', sm: '75%', md: '50%', lg: '400px' },
                     overflowY: 'hidden',
                 },
             }}
@@ -51,7 +51,7 @@ export const DrawerPreguntas = ({ isDrawerOpen, onCloseDrawer, questionText, set
                 </Grid>
                 
                 {/* Contenedor con scroll para la conversación */}
-                <Box sx={{ flexGrow: 1, overflowY: 'auto', maxHeight: 'calc(100vh - 200px)' }}>
+                <Box sx={{ flexGrow: 1, overflowY: 'auto', maxHeight: { xs: 'calc(100vh - 150px)', md: 'calc(100vh - 200px)' } }}>
                     {conversation.map((msg, index) => (
                         <Box key={index} sx={{ mb: 2 }}>
                             <Typography variant="body2" color="textSecondary">
