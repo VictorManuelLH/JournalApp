@@ -72,7 +72,7 @@ export const DrawerPreguntas = ({ isDrawerOpen, onCloseDrawer, questionText, set
                     variant="contained"
                     color="secondary"
                     onClick={onClearConversation}
-                    sx={{ mt: 'auto', mb: 2 }} // Margin top auto pushes the button to the bottom
+                    sx={{ mt: 'auto', mb: 2 }}
                 >
                     Limpiar Conversación
                 </Button>

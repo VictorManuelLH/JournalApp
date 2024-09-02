@@ -24,7 +24,11 @@ export const SideBar = ({ drawerWidth = 240 }) => {
             <Divider />
             <List>
                 {sortedNotes.map(note => (
-                    <SideBarItem key={note.id} {...note} />
+                    <SideBarItem 
+                        key={note.id} 
+                        {...note} 
+                        onCloseSidebar={() => setMobileOpen(false)}
+                    />
                 ))}
             </List>
         </>
@@ -41,7 +45,6 @@ export const SideBar = ({ drawerWidth = 240 }) => {
             >
                 <MenuIcon />
             </IconButton>
-
 
             {/* Drawer para pantallas grandes */}
             <Drawer
