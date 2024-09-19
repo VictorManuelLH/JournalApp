@@ -119,10 +119,10 @@ export const startQuestion = (promptText) => {
                 {
                     model: 'gpt-4-turbo',
                     messages: [
-                        { role: 'system', content: 'Eres un asistente útil que ayuda a un estudiante de universidad y es desarrollador de software, trata de dar solo el resultado explicando SOLO lo necesario' },
+                        { role: 'system', content: 'Eres un asistente útil que ayuda a un estudiante de universidad y es desarrollador de software, dame el resultado y explicame paso a paso el proceso sin desenvolverte tanto' },
                         { role: 'user', content: promptText }
                     ],
-                    max_tokens: 250,
+                    max_tokens: 300,
                 },
                 {
                     headers: {

@@ -16,6 +16,29 @@ export const DrawerPreguntas = ({ isDrawerOpen, onCloseDrawer, questionText, set
         scrollToBottom();
     }, [conversation]);
 
+    useEffect(() => {
+        window.MathJax = {
+            tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
+            svg: { fontCache: 'global' }
+        };
+
+        const script = document.createElement('script');
+        script.src = '/es5/tex-mml-chtml.js';
+        script.async = true;
+        document.head.appendChild(script);
+
+        script.onload = () => {
+            window.MathJax.typesetPromise().then(() => {
+                console.log('MathJax cargado y procesado');
+            });
+        };
+
+        return () => {
+            document.head.removeChild(script);
+        };
+    }, [conversation]);
+
+
     return (
         <Drawer
             anchor="left"
