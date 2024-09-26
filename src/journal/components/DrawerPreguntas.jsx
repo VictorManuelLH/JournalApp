@@ -3,9 +3,17 @@ import { Box, Button, Drawer, Grid, IconButton, TextField, Typography } from '@m
 import { Close, Delete } from '@mui/icons-material';
 import { useSelector } from 'react-redux';
 
+import hljs from 'highlight.js/lib/core';
+import javascript from 'highlight.js/lib/languages/javascript';
+import python from 'highlight.js/lib/languages/python';
+
+import 'highlight.js/styles/atom-one-dark.css';
+
+hljs.registerLanguage('javascript', javascript);
+hljs.registerLanguage('python', python);
+
 export const DrawerPreguntas = ({ isDrawerOpen, onCloseDrawer, questionText, setQuestionText, onInputQuestion, conversation, onClearConversation }) => {
     const { displayName } = useSelector(state => state.auth);
-
     const conversationEndRef = useRef(null);
 
     const scrollToBottom = () => {
@@ -14,6 +22,13 @@ export const DrawerPreguntas = ({ isDrawerOpen, onCloseDrawer, questionText, set
 
     useEffect(() => {
         scrollToBottom();
+    }, [conversation]);
+
+    useEffect(() => {
+        const codeBlocks = document.querySelectorAll('pre code');
+        codeBlocks.forEach(block => {
+            hljs.highlightElement(block);
+        });
     }, [conversation]);
 
     useEffect(() => {
@@ -38,17 +53,16 @@ export const DrawerPreguntas = ({ isDrawerOpen, onCloseDrawer, questionText, set
         };
     }, [conversation]);
 
-
     return (
         <Drawer
             anchor="left"
             open={isDrawerOpen}
             onClose={onCloseDrawer}
             sx={{ 
-                width: { xs: '100%', sm: '75%', md: '50%', lg: '400px' },
+                width: { xs: '100%', sm: '75%', md: '65%', lg: '400px' },
                 flexShrink: 0,
                 '& .MuiDrawer-paper': {
-                    width: { xs: '100%', sm: '75%', md: '50%', lg: '400px' },
+                    width: { xs: '100%', sm: '75%', md: '65%', lg: '400px' },
                     overflowY: 'hidden',
                     display: 'flex',
                     flexDirection: 'column',
@@ -82,9 +96,17 @@ export const DrawerPreguntas = ({ isDrawerOpen, onCloseDrawer, questionText, set
                             <Typography variant="body2" color="textSecondary">
                                 {msg.role === 'user' ? `${displayName}:` : 'AI:'}
                             </Typography>
-                            <Typography variant="body1">
-                                {msg.content}
-                            </Typography>
+                            {msg.content.includes('function') || msg.content.includes('<code>') ? (
+                                <pre>
+                                    <code>
+                                        {msg.content}
+                                    </code>
+                                </pre>
+                            ) : (
+                                <Typography variant="body1">
+                                    {msg.content}
+                                </Typography>
+                            )}
                         </Box>
                     ))}
                     <div ref={conversationEndRef} />
