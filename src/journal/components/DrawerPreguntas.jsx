@@ -4,13 +4,8 @@ import { Close, Delete } from '@mui/icons-material';
 import { useSelector } from 'react-redux';
 
 import hljs from 'highlight.js/lib/core';
-import javascript from 'highlight.js/lib/languages/javascript';
-import python from 'highlight.js/lib/languages/python';
 
 import 'highlight.js/styles/atom-one-dark.css';
-
-hljs.registerLanguage('javascript', javascript);
-hljs.registerLanguage('python', python);
 
 export const DrawerPreguntas = ({ isDrawerOpen, onCloseDrawer, questionText, setQuestionText, onInputQuestion, conversation, onClearConversation }) => {
     const { displayName } = useSelector(state => state.auth);
@@ -53,16 +48,31 @@ export const DrawerPreguntas = ({ isDrawerOpen, onCloseDrawer, questionText, set
         };
     }, [conversation]);
 
+    const supportedLanguages = [
+        'c', 'cpp', 'csharp', 'java', 'javascript', 'python', 'php', 'ruby', 'go', 'swift',
+        'kotlin', 'dart', 'typescript', 'rust', 'scala', 'haskell', 'perl', 'lua',
+        'sql', 'r', 'matlab', 'julia', 'sas', 'stata', 'verilog', 'vhdl', 'ada', 'fortran',
+        'cobol', 'pascal', 'prolog', 'lisp', 'html', 'css', 'html5', 'css3', 'jquery', 'angular',
+        'jsx', 'vue', 'ember', 'objective-c', 'nosql', 'asn', 'unityscript', 'fsharp',
+        'bash', 'zsh', 'sh', 'powershell', 'tcl', 'ocaml', 'racket', 'elixir', 'erlang',
+        'scheme', 'groovy', 'crystal', 'nim', 'vbscript', 'forth', 'd', 'solidity', 'vala',
+        'smalltalk', 'actionscript', 'pony', 'sass', 'less', 'backbone.js', 'svelte', 
+        'alpine.js', 'pug', 'jade', 'markdown', 'xml', 'yaml', 'toml', 'json', 'ini',
+        'graphql', 'cypher', 'rpg', 'abap', 'vimscript', 'hlsl', 'glsl', 'shaderlab',
+        'assembly', 'vhdl', 'systemverilog', 'coq', 'agda'
+    ];
+    
+
     return (
         <Drawer
             anchor="left"
             open={isDrawerOpen}
             onClose={onCloseDrawer}
             sx={{ 
-                width: { xs: '100%', sm: '75%', md: '65%', lg: '400px' },
+                width: { xs: '100%', sm: '75%', md: '65%', lg: '800px' },
                 flexShrink: 0,
                 '& .MuiDrawer-paper': {
-                    width: { xs: '100%', sm: '75%', md: '65%', lg: '400px' },
+                    width: { xs: '100%', sm: '75%', md: '65%', lg: '800px' },
                     overflowY: 'hidden',
                     display: 'flex',
                     flexDirection: 'column',
@@ -91,24 +101,28 @@ export const DrawerPreguntas = ({ isDrawerOpen, onCloseDrawer, questionText, set
                 
                 {/* Contenedor con scroll para la conversación */}
                 <Box sx={{ flexGrow: 1, overflowY: 'auto', maxHeight: { xs: 'calc(100vh - 200px)', md: 'calc(100vh - 200px)' } }}>
-                    {conversation.map((msg, index) => (
-                        <Box key={index} sx={{ mb: 2 }}>
-                            <Typography variant="body2" color="textSecondary">
-                                {msg.role === 'user' ? `${displayName}:` : 'AI:'}
-                            </Typography>
-                            {msg.content.includes('function') || msg.content.includes('<code>') ? (
-                                <pre>
-                                    <code>
-                                        {msg.content}
-                                    </code>
-                                </pre>
-                            ) : (
-                                <Typography variant="body1">
-                                    {msg.content}
+                    {conversation.map((msg, index) => {
+                        const containsCodeBlock = supportedLanguages.some(lang => msg.content.includes(`\`\`\`${lang}`));
+                        
+                        return (
+                            <Box key={index} sx={{ mb: 2 }}>
+                                <Typography variant="body2" color="textSecondary">
+                                    {msg.role === 'user' ? `${displayName}:` : 'AI:'}
                                 </Typography>
-                            )}
-                        </Box>
-                    ))}
+                                {containsCodeBlock ? (
+                                    <pre>
+                                        <code>
+                                            {msg.content}
+                                        </code>
+                                    </pre>
+                                ) : (
+                                    <Typography variant="body1">
+                                        {msg.content}
+                                    </Typography>
+                                )}
+                            </Box>
+                        );
+                    })}
                     <div ref={conversationEndRef} />
                 </Box>
                 

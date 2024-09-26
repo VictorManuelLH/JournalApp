@@ -138,6 +138,8 @@ export const startQuestion = (promptText) => {
 
         } catch (error) {
             console.error('Error al obtener respuesta de OpenAI:', error);
+            const answer = 'Error al hacer su peticion, por favor vuelva a intentar.'
+            dispatch(setOpenAIResponse(answer));
         }
     };
 };
