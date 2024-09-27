@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { Box, Button, Drawer, Grid, IconButton, TextField, Typography } from '@mui/material';
-import { Close, Delete } from '@mui/icons-material';
+import { Close, CopyAll, Delete } from '@mui/icons-material';
 import { useSelector } from 'react-redux';
 
 import hljs from 'highlight.js/lib/core';
@@ -62,6 +62,14 @@ export const DrawerPreguntas = ({ isDrawerOpen, onCloseDrawer, questionText, set
         'assembly', 'vhdl', 'systemverilog', 'coq', 'agda'
     ];
     
+    const onCopyText = (content) => {
+        navigator.clipboard.writeText(content).then(() =>{
+            console.log('Texto copiado');
+        }).catch( err => {
+            console.log('Volver a cargar');
+        } )
+    };
+    
 
     return (
         <Drawer
@@ -111,6 +119,10 @@ export const DrawerPreguntas = ({ isDrawerOpen, onCloseDrawer, questionText, set
                                 </Typography>
                                 {containsCodeBlock ? (
                                     <pre>
+                                        <IconButton onClick={() => onCopyText(msg.content)}>
+                                            <CopyAll />
+                                        </IconButton>
+
                                         <code>
                                             {msg.content}
                                         </code>
