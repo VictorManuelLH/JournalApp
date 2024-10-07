@@ -24,7 +24,7 @@ export const DrawerPreguntas = ({ isDrawerOpen, onCloseDrawer, questionText, set
         codeBlocks.forEach(block => {
             hljs.highlightElement(block);
         });
-    }, [conversation]);
+    }, [isDrawerOpen, conversation]);
 
     useEffect(() => {
         window.MathJax = {
@@ -46,7 +46,7 @@ export const DrawerPreguntas = ({ isDrawerOpen, onCloseDrawer, questionText, set
         return () => {
             document.head.removeChild(script);
         };
-    }, [conversation]);
+    }, [isDrawerOpen, conversation]);
 
     const supportedLanguages = [
         'c', 'cpp', 'csharp', 'java', 'javascript', 'python', 'php', 'ruby', 'go', 'swift',
