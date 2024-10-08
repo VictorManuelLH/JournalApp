@@ -46,12 +46,12 @@ export const NoteView = () => {
             setConversation(note.conversation || []);
         }
     }, [note]);
-    
+
     useEffect(() => {
         if (note) {
             localStorage.setItem('activeNote', JSON.stringify(note));
         }
-    }, [note]);    
+    }, [note]);
 
     const onSaveNote = () => {
         dispatch(startSaveNote());
@@ -69,21 +69,21 @@ export const NoteView = () => {
 
     const onInputQuestion = () => {
         if (questionText.trim().length === 0) return;
-    
+
         const updatedConversation = [...conversation, { role: 'user', content: questionText }];
         setConversation(updatedConversation);
-    
+
         const updatedNote = {
             ...note,
             conversation: updatedConversation
         };
-    
+
         dispatch(setActiveNote(updatedNote));
         dispatch(startQuestion(questionText));
 
         setQuestionText('');
     };
-    
+
     const onDelete = () => {
         dispatch(startDeletingNote());
     };
@@ -95,6 +95,19 @@ export const NoteView = () => {
 
     const onClearConversation = () => {
         dispatch(startCleanConversation());
+    };
+
+    const handleKeyDown = (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+
+            const cursorPosition = e.target.selectionStart;
+            const beforeCursor = body.slice(0, cursorPosition);
+            const afterCursor = body.slice(cursorPosition);
+            const newBody = `${beforeCursor}\n\t${afterCursor}`;
+
+            onInputChange({ target: { name: 'body', value: newBody } });
+        }
     };
 
     return (
@@ -140,7 +153,7 @@ export const NoteView = () => {
                     <EmojiSymbols sx={{ fontSize: 30, mr: 1 }} />
                 </Button>
             </Grid>
-            
+
             <Grid container>
                 <TextField 
                     type="text"
@@ -163,6 +176,7 @@ export const NoteView = () => {
                     name="body"
                     value={body}
                     onChange={onInputChange}
+                    onKeyDown={handleKeyDown}
                 />
             </Grid>
             <Grid container justifyContent='end'>
